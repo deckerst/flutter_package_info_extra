@@ -10,7 +10,7 @@ class FlutterPackageInfoExtra {
   static Future<List<String>> get signingCertificates async {
     List<dynamic> digests = await _channel.invokeMethod('getSigningCertificates');
     List<Uint8List> digestBytes = digests.cast<Uint8List>();
-    List<String> signatures = digestBytes.map((byteArray) => hex.encode(byteArray)).toList();
+    List<String> signatures = digestBytes.map((byteArray) => hex.encode(byteArray).replaceAllMapped(new RegExp(r".{2}(?!$)"), (match) => '${match.group(0)}:').toUpperCase()).toList();
     return signatures;
   }
 }
